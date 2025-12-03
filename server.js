@@ -2,18 +2,28 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cacaodelilioRoutes from "./routes/cacaodelilioRoutes.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
-
 const app = express();
+const PORT = process.env.PORT || 8000;
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 8000;
+//routes
+app.use("/api/cacao", cacaodelilioRoutes);
 
-app.use("/api/cacaodelilio", cacaodelilioRoutes);
+//fallback 404
+app.use((req, res, next) => {
+  const error = new Error(`Not Found - ${req.originalUrl}`);
+  res.status(404);
+  next(error);
+});
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Your are connected to ${PORT}`);
+  console.log(`Successfully connected to PORT ${PORT}`);
 });

@@ -1,19 +1,19 @@
 import express from "express";
-const router = express.Router();
+
+const router = express();
 
 router.get("/", (req, res) => {
   const data = [
-    {
-      id: 1,
-      product: "cacadelio bar",
-    },
+    { id: 1, name: "mike" },
+    { id: 1, name: "bruce" },
   ];
+
   res.json(data);
 });
 
 router.post("/", (req, res) => {
-  const { product } = req.body;
-  res.json(product);
+  const { name } = req.body;
+  res.json(name);
 });
 
 export default router;
